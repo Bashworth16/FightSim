@@ -24,7 +24,7 @@ def attack_phase(player1, player2):
     player2.health = attack(player1.atk, player2.health)
     if block() is True:
         block_format(player2, player1)
-        return format_health(player2)
+        return
     attack_format(player1, player2)
     format_health(player2)
 
@@ -76,7 +76,7 @@ def block():
 
 
 def main():
-    funk = Player("FunkFoo", 100, 12)
+    funk = Player("FunkFoo", 100, 10)
     foo = Player("FuuBar", 100, 10)
     turn_count = 1
     rotation_count = 0
