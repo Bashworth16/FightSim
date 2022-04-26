@@ -1,4 +1,6 @@
+
 from slowprint.slowprint import *
+import random
 
 
 class Player:
@@ -20,6 +22,9 @@ def attack(p1a, p2h):
 
 def attack_phase(player1, player2):
     player2.health = attack(player1.atk, player2.health)
+    if block() is True:
+        block_format(player2, player1)
+        return format_health(player2)
     attack_format(player1, player2)
     format_health(player2)
 
@@ -54,6 +59,19 @@ def check_play(player1, player2):
     if check_die(player2.health) is True:
         return False
     else:
+        return True
+
+
+def block_format(player1, player2):
+    slowprint(f"{player1.name} Blocked {player2.name}'s attack!", 0.8)
+
+
+def block():
+    chance = ['Hit', 'Block']
+    luck = random.randint(0, (len(chance)))
+    if luck is 0:
+        return False
+    if luck is 1:
         return True
 
 
