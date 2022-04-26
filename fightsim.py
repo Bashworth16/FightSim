@@ -1,6 +1,7 @@
 
 from slowprint.slowprint import *
 import random
+import time
 
 
 class Player:
@@ -74,6 +75,16 @@ def block():
     if luck is 1:
         return True
 
+# WIP
+def round_down(t):
+    t *= 60
+    while t:
+        mins, secs = divmod(t, 60)
+        timer = '{:02d}:{:02d}'.format(mins, secs)
+        print(timer, end="\r")
+        time.sleep(1)
+        t -= 1
+
 
 def main():
     funk = Player("FunkFoo", 100, 10)
@@ -82,6 +93,7 @@ def main():
     rotation_count = 0
     slowprint(f'ROUND {turn_count}! FIGHT!', 0.1)
     while True:
+        # WIP round_down(2) code here maybe?
         rotation_count += 1
         if rotation_count % 2 is 0:
             turn_count += 1
