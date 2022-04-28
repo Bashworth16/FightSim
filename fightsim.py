@@ -29,6 +29,14 @@ def check_play(player1, player2):
         return True
 
 
+def coin_flip():
+    toss = random.randint(0, 9)
+    if toss >= 5:
+        return True
+    if toss <= 4:
+        return False
+
+
 def block():
     chance = ['Hit', 'Block']
     luck = random.randint(0, (len(chance)))
