@@ -5,7 +5,7 @@ from fightsim import *
 
 def slow_print(string):
     for each in string:
-        time.sleep(0.01)
+        time.sleep(0.05)
         print(each, end='')
     print("")
 
@@ -61,13 +61,16 @@ def swing(player1, player2):
         return attack_phase(player2, player1)
 
 
-def get_round(p1, p2, r, rot):
+def get_round(x, p1, y, p2, r, rot):
+    togo1 = x - p1.exp
+    togo2 = y - p2.exp
+
     if rot % 4 is 0:
         r += 1
         print("")
         slow_print(f'ROUND {r}! FIGHT!')
-        slow_print(f"{p1.name}:lvl {p1.lvl}, exp {p1.exp}")
-        slow_print(f"{p2.name}:lvl {p2.lvl}, exp {p2.exp}")
+        slow_print(f"{p1.name}: (lvl {p1.lvl}, exp {p1.exp}). {togo1}exp to next lvl!")
+        slow_print(f"{p2.name}: (lvl {p2.lvl}, exp {p2.exp}). {togo2}exp to next lvl!")
         return r
     else:
         return r
@@ -133,7 +136,7 @@ def main():
         funk.atk = get_str(funk)
         foo.atk = get_str(foo)
         rotation_count += 1
-        round_count = get_round(funk, foo, round_count, rotation_count)
+        round_count = get_round(funk_l, funk, foo_l, foo, round_count, rotation_count)
 
         experience = swing(funk, foo)
 
@@ -144,7 +147,7 @@ def main():
             else:
                 continue
 
-        if experience == foo.name:
+        if experience != funk.name:
             foo.exp += 3
             if momentum(foo, foo_l) is True:
                 foo.lvl += 1
