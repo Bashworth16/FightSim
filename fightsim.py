@@ -1,7 +1,5 @@
-
 from slowprint.slowprint import *
 import random
-import time
 
 
 class Player:
@@ -11,23 +9,25 @@ class Player:
         self.atk = atk
 
 
-def attack_format(a, b):
-    slowprint(f'{a.name} Punched {b.name} for {a.atk} DAMAGE!!!', .12)
-    return
-
-
 def attack(p1a, p2h):
     p2h = p2h - p1a
     return p2h
 
 
+def attack_format(a, b):
+    slowprint(f'{a.name} Punched {b.name} for {a.atk} DAMAGE!!!', .12)
+    return
+
+
 def attack_phase(player1, player2):
-    player2.health = attack(player1.atk, player2.health)
     if block() is True:
         block_format(player2, player1)
         return
-    attack_format(player1, player2)
-    format_health(player2)
+    else:
+        player2.health = attack(player1.atk, player2.health)
+        attack_format(player1, player2)
+        format_health(player2)
+        return
 
 
 def check_die(player):
@@ -75,30 +75,19 @@ def block():
     if luck is 1:
         return True
 
-# WIP
-def round_down(t):
-    t *= 60
-    while t:
-        mins, secs = divmod(t, 60)
-        timer = '{:02d}:{:02d}'.format(mins, secs)
-        print(timer, end="\r")
-        time.sleep(1)
-        t -= 1
-
 
 def main():
     funk = Player("FunkFoo", 100, 10)
     foo = Player("FuuBar", 100, 10)
-    turn_count = 1
+    round_count = 1
     rotation_count = 0
-    slowprint(f'ROUND {turn_count}! FIGHT!', 0.1)
+    slowprint(f'ROUND {round_count}! FIGHT!', 0.1)
     while True:
-        # WIP round_down(2) code here maybe?
         rotation_count += 1
         if rotation_count % 2 is 0:
-            turn_count += 1
+            round_count += 1
             print("")
-            slowprint(f'ROUND {turn_count}! FIGHT!', 0.1)
+            slowprint(f'ROUND {round_count}! FIGHT!', 0.1)
         attack_phase(funk, foo)
         get_winner(funk, foo)
         if check_play(funk, foo) is False:
