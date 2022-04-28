@@ -77,14 +77,10 @@ def check_state(player1, player2):
 
 
 def momentum(player, p_e):
-    t = p_e * 0.4
-    if player.lvl is 0 and player.exp < 0:
-        player.lvl += 1
-    if player.exp >= (p_e + t):
-        player.lvl += 1
-        return player.lvl
+    if player.exp >= p_e:
+        return True
     else:
-        return 0
+        return False
 
 
 def keep_fighting():
@@ -104,8 +100,10 @@ def keep_fighting():
 def main():
     funk = Player(name="FunkFoo", health=100, atk=random.randint(1, 50), exp=0, lvl=0)
     foo = Player(name="FuuBar", health=100, atk=random.randint(1, 50), exp=0, lvl=0)
-    funk_l = funk.exp
-    foo_l = foo.exp
+
+    funk_l = round(funk.exp + (funk.exp * .5))
+    foo_l = round(foo.exp + (foo.exp * .5))
+
     round_count = 1
     rotation_count = 0
     slow_print(f'ROUND {round_count}! FIGHT!')
@@ -115,14 +113,23 @@ def main():
         rotation_count += 1
         round_count = get_round(round_count, rotation_count)
         experience = swing(funk, foo)
+
         if experience == funk.name:
-            funk.exp += 2
-        if experience == foo.name:
-            foo.exp += 2
-        funk.lvl += momentum(funk, funk_l)
-        foo.lvl += momentum(foo, foo_l)
-        funk_l = funk.exp
-        foo_l = foo.exp
+            funk.exp += 3
+            if momentum(funk, funk_l) is True:
+                funk.lvl += 1
+            else:
+                continue
+
+        else:
+            foo.exp += 3
+            if momentum(foo, foo_l) is True:
+                foo.lvl += 1
+            else:
+                continue
+
+        funk_l = funk.exp + (funk.exp * .5)
+        foo_l = foo.exp + (foo.exp * .5)
         slow_print(f"{funk.name}:lvl{funk.lvl}, exp{funk.exp}")
         slow_print(f"{foo.name}:lvl{foo.lvl}, exp{foo.exp}")
         get_winner(funk, foo)
