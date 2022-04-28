@@ -50,3 +50,28 @@ def block():
         return False
     if luck is 1:
         return True
+
+
+def get_str(player):
+    if player.lvl is 0:
+        return random.randint(1, 4)
+    if 4 > player.lvl > 0:
+        return random.randint(3, 6)
+    if 7 > player.lvl > 3:
+        return random.randint(5, 8)
+    if 10 > player.lvl > 6:
+        return random.randint(7, 10)
+    if 13 > player.lvl > 9:
+        return random.randint(9, 12)
+    if 16 > player.lvl > 12:
+        return random.randint(11, 14)
+    if 19 > player.lvl > 15:
+        return random.randint(13, 16)
+    if 22 > player.lvl > 18:
+        return random.randint(15, 18)
+    if 25 > player.lvl > 21:
+        return random.randint(17, 20)
+    if 28 > player.lvl > 24:
+        return random.randint(19, 22)
+    if 31 > player.lvl > 27:
+        return random.randint(25, 101)

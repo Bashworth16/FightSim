@@ -5,7 +5,7 @@ from fightsim import *
 
 def slow_print(string):
     for each in string:
-        time.sleep(0.04)
+        time.sleep(0.01)
         print(each, end='')
     print("")
 
@@ -45,11 +45,13 @@ def attack_phase(player1, player2):
 
 def get_winner(a, b):
     if check_die(a.health) is True:
-        return winner_format(b)
+        winner_format(b)
+        return True
     if check_die(b.health) is True:
-        return winner_format(a)
+        winner_format(a)
+        return True
     else:
-        return
+        return False
 
 
 def swing(player1, player2):
@@ -59,11 +61,13 @@ def swing(player1, player2):
         return attack_phase(player2, player1)
 
 
-def get_round(r, rot):
+def get_round(p1, p2, r, rot):
     if rot % 4 is 0:
         r += 1
         print("")
         slow_print(f'ROUND {r}! FIGHT!')
+        slow_print(f"{p1.name}:lvl {p1.lvl}, exp {p1.exp}")
+        slow_print(f"{p2.name}:lvl {p2.lvl}, exp {p2.exp}")
         return r
     else:
         return r
@@ -97,9 +101,23 @@ def keep_fighting():
             continue
 
 
+def play(x, y):
+    if check_state(x, y) is False:
+        kf = keep_fighting()
+        if kf is not True:
+            return False
+        if kf is True:
+            x.health = 100
+            y.health = 100
+            slow_print('ITS NOT OVER!!!')
+            return True
+    else:
+        return True
+
+
 def main():
-    funk = Player(name="FunkFoo", health=100, atk=random.randint(1, 50), exp=0, lvl=0)
-    foo = Player(name="FuuBar", health=100, atk=random.randint(1, 50), exp=0, lvl=0)
+    funk = Player(name="FunkFoo", health=100, atk=0, exp=0, lvl=0)
+    foo = Player(name="FuuBar", health=100, atk=0, exp=0, lvl=0)
 
     funk_l = round(funk.exp + (funk.exp * .5))
     foo_l = round(foo.exp + (foo.exp * .5))
@@ -107,11 +125,16 @@ def main():
     round_count = 1
     rotation_count = 0
     slow_print(f'ROUND {round_count}! FIGHT!')
+    slow_print(f"{funk.name}:lvl {funk.lvl}, exp {funk.exp}")
+    slow_print(f"{foo.name}:lvl {foo.lvl}, exp {foo.exp}")
     while True:
-        funk.atk = random.randint(1, 50)
-        foo.atk = random.randint(1, 50)
+        if get_winner(funk, foo) is True:
+            play(funk, foo)
+        funk.atk = get_str(funk)
+        foo.atk = get_str(foo)
         rotation_count += 1
-        round_count = get_round(round_count, rotation_count)
+        round_count = get_round(funk, foo, round_count, rotation_count)
+
         experience = swing(funk, foo)
 
         if experience == funk.name:
@@ -121,28 +144,20 @@ def main():
             else:
                 continue
 
-        else:
+        if experience == foo.name:
             foo.exp += 3
             if momentum(foo, foo_l) is True:
                 foo.lvl += 1
             else:
                 continue
+        else:
+            continue
+
+        play(funk, foo)
 
         funk_l = funk.exp + (funk.exp * .5)
         foo_l = foo.exp + (foo.exp * .5)
-        slow_print(f"{funk.name}:lvl{funk.lvl}, exp{funk.exp}")
-        slow_print(f"{foo.name}:lvl{foo.lvl}, exp{foo.exp}")
-        get_winner(funk, foo)
-        if check_state(funk, foo) is False:
-            kf = keep_fighting()
-            if kf is not True:
-                break
-            if kf is True:
-                funk.health = 100
-                foo.health = 100
-                slow_print('ITS NOT OVER!!!')
-        else:
-            continue
+
     return
 
 
