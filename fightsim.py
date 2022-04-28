@@ -1,11 +1,17 @@
 import random
 
 
+def read_lvl():
+    return
+
+
 class Player:
-    def __init__(self, name, health, atk):
+    def __init__(self, name, health, atk, exp, lvl):
         self.name = name
         self.health = health
         self.atk = atk
+        self.exp = exp
+        self.lvl = lvl
 
 
 def attack(p1a, p2h):

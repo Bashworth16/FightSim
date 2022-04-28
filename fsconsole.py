@@ -35,12 +35,12 @@ def attack_phase(player1, player2):
     slow_print(f'{player1.name} is attacking with {player1.atk}')
     if block() is True:
         block_format(player2, player1)
-        return
+        return player2.name
     else:
         player2.health = attack(player1.atk, player2.health)
         attack_format(player1, player2)
         format_health(player2)
-        return
+        return player1.name
 
 
 def get_winner(a, b):
@@ -76,9 +76,36 @@ def check_state(player1, player2):
         return True
 
 
+def momentum(player, p_e):
+    t = p_e * 0.4
+    if player.lvl is 0 and player.exp < 0:
+        player.lvl += 1
+    if player.exp >= (p_e + t):
+        player.lvl += 1
+        return player.lvl
+    else:
+        return 0
+
+
+def keep_fighting():
+    while True:
+        a = input("Keep Fighting?!?! ('y' or 'n'): ")
+        print("")
+        if a == 'y':
+            return True
+        elif a == 'n':
+            print('Goodbye!')
+            return False
+        else:
+            print('Please Choose "y" or "n"!')
+            continue
+
+
 def main():
-    funk = Player(name="FunkFoo", health=100, atk=random.randint(1, 50))
-    foo = Player(name="FuuBar", health=100, atk=random.randint(1, 50))
+    funk = Player(name="FunkFoo", health=100, atk=random.randint(1, 50), exp=0, lvl=0)
+    foo = Player(name="FuuBar", health=100, atk=random.randint(1, 50), exp=0, lvl=0)
+    funk_l = funk.exp
+    foo_l = foo.exp
     round_count = 1
     rotation_count = 0
     slow_print(f'ROUND {round_count}! FIGHT!')
@@ -87,14 +114,28 @@ def main():
         foo.atk = random.randint(1, 50)
         rotation_count += 1
         round_count = get_round(round_count, rotation_count)
-        swing(funk, foo)
+        experience = swing(funk, foo)
+        if experience == funk.name:
+            funk.exp += 2
+        if experience == foo.name:
+            foo.exp += 2
+        funk.lvl += momentum(funk, funk_l)
+        foo.lvl += momentum(foo, foo_l)
+        funk_l = funk.exp
+        foo_l = foo.exp
+        slow_print(f"{funk.name}:lvl{funk.lvl}, exp{funk.exp}")
+        slow_print(f"{foo.name}:lvl{foo.lvl}, exp{foo.exp}")
         get_winner(funk, foo)
         if check_state(funk, foo) is False:
-            break
+            kf = keep_fighting()
+            if kf is not True:
+                break
+            if kf is True:
+                funk.health = 100
+                foo.health = 100
+                slow_print('ITS NOT OVER!!!')
         else:
             continue
-
-    slow_print("Goodbye!")
     return
 
 
