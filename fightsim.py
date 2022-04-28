@@ -1,4 +1,3 @@
-from slowprint.slowprint import *
 import random
 
 
@@ -14,17 +13,11 @@ def attack(p1a, p2h):
     return p2h
 
 
-
-
-
 def check_die(player):
     if player < 0 or player == 0:
         return True
     else:
         return False
-
-
-
 
 
 def check_play(player1, player2):
@@ -36,9 +29,6 @@ def check_play(player1, player2):
         return True
 
 
-
-
-
 def block():
     chance = ['Hit', 'Block']
     luck = random.randint(0, (len(chance)))
@@ -46,6 +36,3 @@ def block():
         return False
     if luck is 1:
         return True
-
-
-

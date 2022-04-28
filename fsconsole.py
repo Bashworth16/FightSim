@@ -1,3 +1,4 @@
+from slowprint.slowprint import *
 from fightsim import *
 
 
